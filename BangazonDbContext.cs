@@ -62,6 +62,15 @@ public class BangazonDbContext : DbContext
         modelBuilder.Entity<OrderStatus>()
             .Property(o => o.OrderStatusId)
             .ValueGeneratedOnAdd();
+        modelBuilder.Entity<Customers>()
+            .HasOne(c => c.CustomerOrders)
+            .WithOne(co => co.Customer)
+            .HasForeignKey<CustomerOrders>(co => co.CustomerOrderId);
+        modelBuilder.Entity<OrderItems>()
+        .HasOne(oi => oi.Orders)
+        .WithOne(o => o.OrderItems)
+        .HasForeignKey<OrderItems>(oi => oi.OrderItemsId);
+
 
         modelBuilder.Entity<Customers>().HasData(
             new Customers
@@ -96,7 +105,7 @@ public class BangazonDbContext : DbContext
             new ProductTypes { ProductTypeId = 2, Name = "Gadgets", Description = "Gadgets are cooler", ImageUrl = "" }
         );
         modelBuilder.Entity<Sellers>().HasData(
-            new Sellers { SellerId = "1", FirstName = "Jane", LastName = "Doe", Email = "seller@email.com", PhoneNumber = "555-555-5555", City = "Decatur", State = "Georgia", PostalCode = "32323" },
+            new Sellers { SellerId = "1", FirstName = "Jane", LastName = "Doe", Email = "seller@email.com", PhoneNumber = "555-555-5555", City = "Decatur", State = "Georgia", PostalCode = "32323" }
         );
         modelBuilder.Entity<Orders>().HasData(
             new Orders { OrdersId = 1, Quantity = 10, IsFullfilled = false, TotalPrice = 450M , OrderDate = new DateTime(2019, 1, 1), PaymentDate = DateTime.Now },
