@@ -66,10 +66,19 @@ public class BangazonDbContext : DbContext
             .HasOne(c => c.CustomerOrders)
             .WithOne(co => co.Customer)
             .HasForeignKey<CustomerOrders>(co => co.CustomerOrderId);
+        modelBuilder.Entity<Customers>()
+            .HasOne(c => c.CustomerOrders)
+            .WithOne(co => co.Customer)
+            .HasForeignKey<CustomerOrders>(co => co.CustomerOrderId)
+            .HasPrincipalKey<Customers>(c => c.Uid);
         modelBuilder.Entity<OrderItems>()
-        .HasOne(oi => oi.Orders)
-        .WithOne(o => o.OrderItems)
-        .HasForeignKey<OrderItems>(oi => oi.OrderItemsId);
+            .HasOne(oi => oi.Orders)
+            .WithOne(o => o.OrderItems)
+            .HasForeignKey<OrderItems>(oi => oi.OrderItemsId);
+        modelBuilder.Entity<Orders>()
+            .HasOne(o => o.Payment)
+            .WithOne(p => p.Orders)
+            .HasForeignKey<Payments>(p => p.PaymentId);
 
 
         modelBuilder.Entity<Customers>().HasData(
@@ -121,8 +130,8 @@ public class BangazonDbContext : DbContext
             new Payments { PaymentId = 2, AccountNumber = "0987654321" }
         );
         modelBuilder.Entity<CustomerOrders>().HasData(
-            new CustomerOrders { CustomerOrderId = 1 },
-            new CustomerOrders { CustomerOrderId = 2 }
+            new CustomerOrders { CustomerOrderId = "1" },
+            new CustomerOrders { CustomerOrderId = "2" }
         );
         modelBuilder.Entity<SellerOrders>().HasData(
             new SellerOrders { SellerOrdersId = 1 },
