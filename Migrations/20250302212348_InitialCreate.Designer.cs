@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace bangazon_issues.Migrations
 {
     [DbContext(typeof(BangazonDbContext))]
-    [Migration("20250301191827_InitialCreate")]
+    [Migration("20250302212348_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -32,6 +32,9 @@ namespace bangazon_issues.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("AccountTypeId"));
 
+                    b.Property<int>("AccountTypeEnum")
+                        .HasColumnType("integer");
+
                     b.HasKey("AccountTypeId");
 
                     b.ToTable("AccountType");
@@ -39,11 +42,13 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            AccountTypeId = 1
+                            AccountTypeId = 1,
+                            AccountTypeEnum = 2
                         },
                         new
                         {
-                            AccountTypeId = 2
+                            AccountTypeId = 2,
+                            AccountTypeEnum = 1
                         });
                 });
 
@@ -253,7 +258,7 @@ namespace bangazon_issues.Migrations
                             OrdersId = 1,
                             IsFullfilled = false,
                             OrderDate = new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PaymentDate = new DateTime(2025, 3, 1, 13, 18, 26, 329, DateTimeKind.Local).AddTicks(5974),
+                            PaymentDate = new DateTime(2025, 3, 2, 15, 23, 47, 709, DateTimeKind.Local).AddTicks(4620),
                             Quantity = 10,
                             TotalPrice = 450m
                         },
@@ -262,7 +267,7 @@ namespace bangazon_issues.Migrations
                             OrdersId = 2,
                             IsFullfilled = true,
                             OrderDate = new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PaymentDate = new DateTime(2025, 3, 1, 13, 18, 26, 329, DateTimeKind.Local).AddTicks(6012),
+                            PaymentDate = new DateTime(2025, 3, 2, 15, 23, 47, 709, DateTimeKind.Local).AddTicks(4660),
                             Quantity = 5,
                             TotalPrice = 350m
                         });

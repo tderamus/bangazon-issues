@@ -29,6 +29,8 @@ public class BangazonDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // Set up composite keys to be auto-generated
+
         modelBuilder.Entity<OrderItems>()
             .Property(o => o.OrderItemsId)
             .ValueGeneratedOnAdd();
@@ -62,6 +64,9 @@ public class BangazonDbContext : DbContext
         modelBuilder.Entity<OrderStatus>()
             .Property(o => o.OrderStatusId)
             .ValueGeneratedOnAdd();
+
+        // Build DB Relationships
+
         modelBuilder.Entity<Customers>()
             .HasOne(c => c.CustomerOrders)
             .WithOne(co => co.Customer)
@@ -91,7 +96,7 @@ public class BangazonDbContext : DbContext
                 PhoneNumber = "256-490-1245",
                 City = "Gadsden",
                 State = "Alabama",
-                PostalCode = "35901",
+                PostalCode = "35901"
             },
             new Customers
             {
@@ -142,16 +147,16 @@ public class BangazonDbContext : DbContext
             new SellerDashboard { SellerDashBoardId = 2, TotalRevenue = 19.99m, TotalOrders = 1 }
         );
         modelBuilder.Entity<AccountType>().HasData(
-           new AccountType { AccountTypeId = 1, AcctType = AccountTypeEnum.Customer },
-              new AccountType { AccountTypeId = 2, AcctType = AccountTypeEnum.Seller }
+           new AccountType { AccountTypeId = 1, TypeAcct = AcctType.Admin },
+           new AccountType { AccountTypeId = 2, TypeAcct = AcctType.Seller }
         );
         modelBuilder.Entity<OrderStatus>().HasData(
-            new OrderStatus { OrderStatusId = 1, OrderStat = OrderStatusEnum.Pending },
-            new OrderStatus { OrderStatusId = 2, OrderStat = OrderStatusEnum.Completed }
+            new OrderStatus { OrderStatusId = 1, OrderState = StatusOfOrder.Pending },
+            new OrderStatus { OrderStatusId = 2, OrderState = StatusOfOrder.Completed }
         );
         modelBuilder.Entity<PaymentTypes>().HasData(
-            new PaymentTypes { PaymentTypeId = 1, PmtType = PaymentTypeEnum.PayPal },
-            new PaymentTypes { PaymentTypeId = 2, PmtType = PaymentTypeEnum.ApplePay }
+            new PaymentTypes { PaymentTypeId = 1, TypePayment = PmtType.PayPal },
+            new PaymentTypes { PaymentTypeId = 2, TypePayment = PmtType.ApplePay }
         );
     }
 }

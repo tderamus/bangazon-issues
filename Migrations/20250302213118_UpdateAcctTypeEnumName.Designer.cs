@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace bangazon_issues.Migrations
 {
     [DbContext(typeof(BangazonDbContext))]
-    partial class BangazonDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250302213118_UpdateAcctTypeEnumName")]
+    partial class UpdateAcctTypeEnumName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -187,9 +190,6 @@ namespace bangazon_issues.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("OrderStatusId"));
 
-                    b.Property<int>("OrderState")
-                        .HasColumnType("integer");
-
                     b.HasKey("OrderStatusId");
 
                     b.ToTable("OrderStatus");
@@ -197,13 +197,11 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            OrderStatusId = 1,
-                            OrderState = 0
+                            OrderStatusId = 1
                         },
                         new
                         {
-                            OrderStatusId = 2,
-                            OrderState = 2
+                            OrderStatusId = 2
                         });
                 });
 
@@ -260,7 +258,7 @@ namespace bangazon_issues.Migrations
                             OrdersId = 1,
                             IsFullfilled = false,
                             OrderDate = new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PaymentDate = new DateTime(2025, 3, 2, 15, 51, 56, 924, DateTimeKind.Local).AddTicks(5574),
+                            PaymentDate = new DateTime(2025, 3, 2, 15, 31, 17, 788, DateTimeKind.Local).AddTicks(5472),
                             Quantity = 10,
                             TotalPrice = 450m
                         },
@@ -269,7 +267,7 @@ namespace bangazon_issues.Migrations
                             OrdersId = 2,
                             IsFullfilled = true,
                             OrderDate = new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PaymentDate = new DateTime(2025, 3, 2, 15, 51, 56, 924, DateTimeKind.Local).AddTicks(5617),
+                            PaymentDate = new DateTime(2025, 3, 2, 15, 31, 17, 788, DateTimeKind.Local).AddTicks(5509),
                             Quantity = 5,
                             TotalPrice = 350m
                         });
@@ -283,9 +281,6 @@ namespace bangazon_issues.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("PaymentTypeId"));
 
-                    b.Property<int>("TypePayment")
-                        .HasColumnType("integer");
-
                     b.HasKey("PaymentTypeId");
 
                     b.ToTable("PaymentTypes");
@@ -293,13 +288,11 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            PaymentTypeId = 1,
-                            TypePayment = 4
+                            PaymentTypeId = 1
                         },
                         new
                         {
-                            PaymentTypeId = 2,
-                            TypePayment = 9
+                            PaymentTypeId = 2
                         });
                 });
 

@@ -5,10 +5,7 @@ namespace bangazon_issues.Models
 {
     public class OrderStatus
     {
-        internal object? OrderStat;
-        [Key]
-        public int OrderStatusId { get; set; }
-        public enum OrderStatusEnum
+        public enum StatusOfOrder
         {
             Pending,
             Backordered,
@@ -17,5 +14,10 @@ namespace bangazon_issues.Models
             Delivered,
             Cancelled
         }
+
+        [Key]
+        public int OrderStatusId { get; set; }
+        public StatusOfOrder OrderState { get; set; }
+
     }
 }
