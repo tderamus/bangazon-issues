@@ -4,15 +4,15 @@ namespace bangazon_issues.Models
 {
     public class AccountType
     {
-        internal object? AcctType;
-
-        [Key]
-        public int AccountTypeId { get; set; }
-        public enum AccountTypeEnum
+        public enum AcctType
         {
             Customer,
             Seller,
             Admin
         }
+
+        [Key]
+        public int AccountTypeId { get; set; }
+        public AcctType TypeAcct { get; set; }
     }
 }

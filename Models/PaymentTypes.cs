@@ -4,10 +4,7 @@ namespace bangazon_issues.Models
 {
     public class PaymentTypes
     {
-        internal object? PmtType;
-        [Key]
-        public int PaymentTypeId { get; set; }
-        public enum PaymentTypeEnum
+        public enum PmtType
         {
             Visa,
             MasterCard,
@@ -23,5 +20,10 @@ namespace bangazon_issues.Models
             PurchaseOrder,
             Check
         }
+
+        [Key]
+        public int PaymentTypeId { get; set; }
+        public PmtType TypePayment { get; set; }
+        
     }
 }

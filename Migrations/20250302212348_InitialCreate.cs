@@ -19,7 +19,8 @@ namespace bangazon_issues.Migrations
                 columns: table => new
                 {
                     AccountTypeId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    AccountTypeEnum = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -313,11 +314,11 @@ namespace bangazon_issues.Migrations
 
             migrationBuilder.InsertData(
                 table: "AccountType",
-                column: "AccountTypeId",
-                values: new object[]
+                columns: new[] { "AccountTypeId", "AccountTypeEnum" },
+                values: new object[,]
                 {
-                    1,
-                    2
+                    { 1, 2 },
+                    { 2, 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -343,8 +344,8 @@ namespace bangazon_issues.Migrations
                 columns: new[] { "OrdersId", "CustomerUid", "IsFullfilled", "OrderDate", "OrderStatusId", "PaymentDate", "ProductId", "Quantity", "SellerId", "TotalPrice" },
                 values: new object[,]
                 {
-                    { 1, null, false, new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new DateTime(2025, 3, 1, 13, 18, 26, 329, DateTimeKind.Local).AddTicks(5974), null, 10, null, 450m },
-                    { 2, null, true, new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new DateTime(2025, 3, 1, 13, 18, 26, 329, DateTimeKind.Local).AddTicks(6012), null, 5, null, 350m }
+                    { 1, null, false, new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new DateTime(2025, 3, 2, 15, 23, 47, 709, DateTimeKind.Local).AddTicks(4620), null, 10, null, 450m },
+                    { 2, null, true, new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new DateTime(2025, 3, 2, 15, 23, 47, 709, DateTimeKind.Local).AddTicks(4660), null, 5, null, 350m }
                 });
 
             migrationBuilder.InsertData(
