@@ -5,7 +5,7 @@ namespace bangazon_issues.Models
     public class SellerDashboard
     {
         [Key]
-        public int SellerDashBoardId { get; set; }
+        public string SellerDashBoardId { get; set; } = Guid.NewGuid().ToString();
         public Sellers? Seller { get; set; }
         public decimal TotalRevenue { get; set; }
         // Read-only property to return formatted TotalRevenue

@@ -5,7 +5,7 @@ namespace bangazon_issues.Models
     public class SellerOrders
     {
         [Key]
-        public required int SellerOrdersId { get; set; }
+        public string SellerOrdersId { get; set; } = Guid.NewGuid().ToString();
         public Sellers? Sellers { get; set; }
         public Orders? Orders { get; set; }
     }

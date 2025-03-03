@@ -22,7 +22,7 @@ namespace bangazon_issues.Models
         }
 
         [Key]
-        public int PaymentTypeId { get; set; }
+        public string PaymentTypeId { get; set; } = Guid.NewGuid().ToString();
         public PmtType TypePayment { get; set; }
         
     }

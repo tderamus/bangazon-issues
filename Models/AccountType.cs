@@ -12,7 +12,7 @@ namespace bangazon_issues.Models
         }
 
         [Key]
-        public int AccountTypeId { get; set; }
+        public string AccountTypeId { get; set; } = Guid.NewGuid().ToString();
         public AcctType TypeAcct { get; set; }
     }
 }

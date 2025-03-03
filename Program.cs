@@ -47,6 +47,17 @@ app.MapGet("api/customers", (BangazonDbContext db) =>
     return Results.Ok(db.Customers.ToList());
 });
 
+// Get a single customer by their Uid
+app.MapGet("api/customers/{Uid}", (BangazonDbContext db, string Uid) =>
+{
+    var customer = db.Customers.Find(Uid);
+    if (customer == null)
+    {
+        return Results.NotFound();
+    }
+    return Results.Ok(customer);
+});
+
 // GET All CustomerOrders
 app.MapGet("api/customerorders", (BangazonDbContext db) =>
 {
@@ -175,6 +186,60 @@ app.MapPost("api/customers", (BangazonDbContext db, Customers customer) =>
     db.Customers.Add(customer);
     db.SaveChanges();
     return Results.Created($"/api/customers/{customer.Uid}", customer);
+});
+
+// Create a new CustomerOrder
+app.MapPost("api/customerorders", (BangazonDbContext db, CustomerOrders NewCustomerOrder) =>
+{
+    if (string.IsNullOrEmpty(NewCustomerOrder.CustomerOrderId))
+    {
+        NewCustomerOrder.CustomerOrderId = Guid.NewGuid().ToString();
+    }
+
+    // Check if the customer exists
+    var customerUid = db.Customers.SingleOrDefault(c => c.Uid == NewCustomerOrder.Customer.Uid);
+    if (customerUid == null)
+    {
+        return Results.NotFound(new { message = "Customer not found" });
+    }
+
+    // Set the CustomerUid to the Customer's Uid
+    NewCustomerOrder.CustomerUid = customerUid.Uid;
+
+    // Check if the order exists
+    var order = db.Orders.SingleOrDefault(o => o.OrdersId == NewCustomerOrder.Orders.OrdersId);
+    if (order == null)
+    {
+        return Results.NotFound(new { message = "Order not found" });
+    }
+
+    db.CustomersOrders.Add(NewCustomerOrder);
+    db.SaveChanges();
+    return Results.Created($"/api/customerorders/{NewCustomerOrder.CustomerOrderId}", NewCustomerOrder);
+});
+
+// Create a new Seller
+app.MapPost("api/sellers", (BangazonDbContext db, Sellers seller) =>
+{
+    if (string.IsNullOrEmpty(seller.SellerId))
+    {
+        seller.SellerId = Guid.NewGuid().ToString();
+    }
+    db.Sellers.Add(seller);
+    db.SaveChanges();
+    return Results.Created($"/api/sellers/{seller.SellerId}", seller);
+});
+
+// Create a new Product
+app.MapPost("api/products", (BangazonDbContext db, Products product) =>
+{
+    if (string.IsNullOrEmpty(product.ProductId))
+    {
+        product.ProductId = Guid.NewGuid().ToString();
+    }
+    db.Products.Add(product);
+    db.SaveChanges();
+    return Results.Created($"/api/products/{product.ProductId}", product);
 });
 
 

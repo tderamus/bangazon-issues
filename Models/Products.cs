@@ -4,7 +4,7 @@ namespace bangazon_issues.Models
     public class Products
     {
         [Key]
-        public int ProductId { get; set; }
+        public string ProductId { get; set; } = Guid.NewGuid().ToString();
         public int ProductTypeId { get; set; }
         public string? SellerUid { get; set; }
         public string? ImageUrl { get; set; }
