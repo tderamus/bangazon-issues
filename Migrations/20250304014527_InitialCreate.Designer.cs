@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace bangazon_issues.Migrations
 {
     [DbContext(typeof(BangazonDbContext))]
-    [Migration("20250303045347_InitialCreate")]
+    [Migration("20250304014527_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -40,12 +40,12 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            AccountTypeId = "4a1a5df7-87d9-4803-a78a-3227802dd89c",
+                            AccountTypeId = "63d1b90b-daeb-4e69-8288-22263e33fcf0",
                             TypeAcct = 2
                         },
                         new
                         {
-                            AccountTypeId = "5338007b-ed9a-4365-802e-3c7750f61a25",
+                            AccountTypeId = "f21ab4a8-ed2b-4ba1-b05c-09380ad91d29",
                             TypeAcct = 1
                         });
                 });
@@ -80,12 +80,12 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            CustomerOrderId = "1198a6df-c6a8-4c67-9243-637282074d87",
+                            CustomerOrderId = "07d2596f-58f3-4ba1-b1f6-2eae26c6c615",
                             CustomerUid = "1"
                         },
                         new
                         {
-                            CustomerOrderId = "466a4dab-6b6c-42f8-a833-ea84093e8bc4",
+                            CustomerOrderId = "285a4c51-9e9d-4620-ae86-fdb1d82cf019",
                             CustomerUid = "2"
                         });
                 });
@@ -183,15 +183,15 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            OrderItemsId = "0bf615d6-e000-490e-aaa1-83f93bc9cdc6",
-                            OrdersId = "1",
+                            OrderItemsId = "fddd2a63-75d4-4e7e-b7da-0c641f766727",
+                            OrdersId = "e4b488ce-4320-4a0a-951c-1780cf13fadd",
                             Quantity = 2,
                             TotalPrice = 45m
                         },
                         new
                         {
-                            OrderItemsId = "950f39d6-613f-45ee-bc5e-0f2206d0e4ff",
-                            OrdersId = "2",
+                            OrderItemsId = "1b6869ea-e12f-4918-8b74-10d03f0e6985",
+                            OrdersId = "c2eb5be7-b7b7-448e-a5fe-7998d248d35f",
                             Quantity = 1,
                             TotalPrice = 35m
                         });
@@ -213,12 +213,12 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            OrderStatusId = "2d4ae539-653e-4fef-839d-ca7e8337008a",
+                            OrderStatusId = "81fbceef-bc08-431e-b0f4-cbde246edce3",
                             OrderState = 0
                         },
                         new
                         {
-                            OrderStatusId = "2abe1613-aa27-43a4-9594-daf97cd6e3c1",
+                            OrderStatusId = "14544b7a-de3b-4cbe-baef-88086336ec6c",
                             OrderState = 2
                         });
                 });
@@ -244,6 +244,9 @@ namespace bangazon_issues.Migrations
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<string>("PaymentId")
+                        .HasColumnType("text");
+
                     b.Property<string>("ProductId")
                         .HasColumnType("text");
 
@@ -262,6 +265,9 @@ namespace bangazon_issues.Migrations
 
                     b.HasIndex("OrderStatusId");
 
+                    b.HasIndex("PaymentId")
+                        .IsUnique();
+
                     b.HasIndex("ProductId");
 
                     b.HasIndex("SellerId");
@@ -271,19 +277,19 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            OrdersId = "879ec1ad-e771-413d-9abc-fd4a2e5f3d27",
+                            OrdersId = "e4b488ce-4320-4a0a-951c-1780cf13fadd",
                             IsFullfilled = false,
                             OrderDate = new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PaymentDate = new DateTime(2025, 3, 2, 22, 53, 47, 616, DateTimeKind.Local).AddTicks(1461),
+                            PaymentDate = new DateTime(2025, 3, 3, 19, 45, 27, 130, DateTimeKind.Local).AddTicks(9472),
                             Quantity = 10,
                             TotalPrice = 450m
                         },
                         new
                         {
-                            OrdersId = "cedfd9e1-e837-4768-bb7c-892a10d09337",
+                            OrdersId = "c2eb5be7-b7b7-448e-a5fe-7998d248d35f",
                             IsFullfilled = true,
                             OrderDate = new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PaymentDate = new DateTime(2025, 3, 2, 22, 53, 47, 616, DateTimeKind.Local).AddTicks(1500),
+                            PaymentDate = new DateTime(2025, 3, 3, 19, 45, 27, 130, DateTimeKind.Local).AddTicks(9515),
                             Quantity = 5,
                             TotalPrice = 350m
                         });
@@ -305,12 +311,12 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            PaymentTypeId = "20b462f5-d798-48c8-bac8-e0484a5a1d5d",
+                            PaymentTypeId = "65648bcb-9ad5-4ce1-b386-5a198e4b10a4",
                             TypePayment = 4
                         },
                         new
                         {
-                            PaymentTypeId = "6b740303-de38-4663-9f0e-8b81ef75582c",
+                            PaymentTypeId = "fd89cb2d-8e45-4995-afae-4eb2861e325b",
                             TypePayment = 9
                         });
                 });
@@ -352,14 +358,14 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            PaymentId = "a9faf802-94be-4ef5-bde5-edf0d77e693c",
+                            PaymentId = "39dfc9c0-db58-468d-8069-f5a7f1385cf2",
                             AccountNumber = "1234567890",
                             Amount = 0m,
                             PaymentDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            PaymentId = "d467a418-fd2d-440c-a9c0-1dcdfb7132d0",
+                            PaymentId = "34b5bd26-0ed7-41bc-b35c-4b3232ca90fd",
                             AccountNumber = "0987654321",
                             Amount = 0m,
                             PaymentDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -388,14 +394,14 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            ProductTypeId = "d9833c74-b778-4653-9aae-5ce7e467ce88",
+                            ProductTypeId = "f4bb1438-a0f5-4361-ab4c-b95d0e3e7355",
                             Description = "Widgets are cool",
                             ImageUrl = "",
                             Name = "Widgets"
                         },
                         new
                         {
-                            ProductTypeId = "fbd83d1c-3c5f-44ea-8bdf-f95d88f8f20b",
+                            ProductTypeId = "c57a270b-6d4a-424d-a55f-ab7c37ce5c8e",
                             Description = "Gadgets are cooler",
                             ImageUrl = "",
                             Name = "Gadgets"
@@ -442,7 +448,7 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            ProductId = "fec8f407-8a1c-438d-958f-5093e39f28f8",
+                            ProductId = "4afc9a1d-7a94-4204-a6dc-fac1c44aaf09",
                             DateAdded = new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "A widget that does stuff",
                             IsAvailable = false,
@@ -454,7 +460,7 @@ namespace bangazon_issues.Migrations
                         },
                         new
                         {
-                            ProductId = "6a12075c-7f39-43ba-a264-6c0f9c1288a1",
+                            ProductId = "d40bd311-87b0-4a34-a6a5-634bb497a8da",
                             DateAdded = new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "A gadget that does stuff",
                             IsAvailable = false,
@@ -490,13 +496,13 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            SellerDashBoardId = "ab53df5f-cce5-4f73-9188-8f300205cec2",
+                            SellerDashBoardId = "93d32240-c382-4c99-a9e2-5d664418d32f",
                             TotalOrders = 2,
                             TotalRevenue = 19.98m
                         },
                         new
                         {
-                            SellerDashBoardId = "629a2974-8deb-405c-ab83-f8c83cae1f1f",
+                            SellerDashBoardId = "cc6bc701-d3aa-4134-ba01-2c8f31c7dcc2",
                             TotalOrders = 1,
                             TotalRevenue = 19.99m
                         });
@@ -525,11 +531,11 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            SellerOrdersId = "3ef8f136-7361-458e-920d-5945cf3f652c"
+                            SellerOrdersId = "c1ee1fb5-2db6-4c90-b3ef-510e3641bd42"
                         },
                         new
                         {
-                            SellerOrdersId = "925d05d3-fd3c-4dfa-9b09-95952e5d0242"
+                            SellerOrdersId = "0feac109-5731-480a-aba1-51c6b2b77ff5"
                         });
                 });
 
@@ -574,7 +580,7 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            SellerId = "2320613c-d0b8-488a-94c2-34831516b270",
+                            SellerId = "df3e83dd-4d01-4050-83fd-f6ca1112b2ef",
                             City = "Decatur",
                             Email = "seller@email.com",
                             FirstName = "Jane",
@@ -585,7 +591,7 @@ namespace bangazon_issues.Migrations
                         },
                         new
                         {
-                            SellerId = "e7ec9deb-2c93-4ce1-b52f-8d56076c1f78",
+                            SellerId = "b52cf90d-b4d1-4e89-b979-e6af88787c7a",
                             City = "Birmingham",
                             Email = "jsmith@jsmith.com",
                             FirstName = "John",
@@ -655,6 +661,10 @@ namespace bangazon_issues.Migrations
                         .WithMany()
                         .HasForeignKey("OrderStatusId");
 
+                    b.HasOne("bangazon_issues.Models.Payments", "Payment")
+                        .WithOne("Orders")
+                        .HasForeignKey("bangazon_issues.Models.Orders", "PaymentId");
+
                     b.HasOne("bangazon_issues.Models.Products", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId");
@@ -667,6 +677,8 @@ namespace bangazon_issues.Migrations
 
                     b.Navigation("OrderStatus");
 
+                    b.Navigation("Payment");
+
                     b.Navigation("Product");
 
                     b.Navigation("Seller");
@@ -678,12 +690,6 @@ namespace bangazon_issues.Migrations
                         .WithMany()
                         .HasForeignKey("CustomerUid");
 
-                    b.HasOne("bangazon_issues.Models.Orders", "Orders")
-                        .WithOne("Payment")
-                        .HasForeignKey("bangazon_issues.Models.Payments", "PaymentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("bangazon_issues.Models.PaymentTypes", "PaymentTypes")
                         .WithMany()
                         .HasForeignKey("PaymentTypesPaymentTypeId");
@@ -693,8 +699,6 @@ namespace bangazon_issues.Migrations
                         .HasForeignKey("SellerId");
 
                     b.Navigation("Customer");
-
-                    b.Navigation("Orders");
 
                     b.Navigation("PaymentTypes");
 
@@ -742,8 +746,11 @@ namespace bangazon_issues.Migrations
             modelBuilder.Entity("bangazon_issues.Models.Orders", b =>
                 {
                     b.Navigation("OrderItems");
+                });
 
-                    b.Navigation("Payment");
+            modelBuilder.Entity("bangazon_issues.Models.Payments", b =>
+                {
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

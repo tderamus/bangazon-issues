@@ -81,13 +81,15 @@ public class BangazonDbContext : DbContext
         modelBuilder.Entity<Orders>()
             .HasOne(o => o.Payment)
             .WithOne(p => p.Orders)
-            .HasForeignKey<Payments>(p => p.PaymentId);
+            .HasForeignKey<Orders>(o => o.PaymentId);
 
 
         // Add seed data
 
         var order1Id = Guid.NewGuid().ToString();
         var order2Id = Guid.NewGuid().ToString();
+        var payment1Id = Guid.NewGuid().ToString();
+        var payment2Id = Guid.NewGuid().ToString();
 
         modelBuilder.Entity<Customers>().HasData(
             new Customers
@@ -135,8 +137,8 @@ public class BangazonDbContext : DbContext
             new OrderItems { OrderItemsId = Guid.NewGuid().ToString(), OrdersId = order2Id, Quantity = 1, TotalPrice = 35m }
         );
         modelBuilder.Entity<Payments>().HasData(
-            new Payments { PaymentId = Guid.NewGuid().ToString(), AccountNumber = "1234567890" },
-            new Payments { PaymentId = Guid.NewGuid().ToString(), AccountNumber = "0987654321" }
+            new Payments { PaymentId = payment1Id, PaymentDate = DateTime.UtcNow, AccountNumber = "1234567890" },
+            new Payments { PaymentId = payment2Id, PaymentDate = DateTime.UtcNow, AccountNumber = "0987654321" }
         );
         modelBuilder.Entity<CustomerOrders>().HasData(
             new CustomerOrders { CustomerOrderId = Guid.NewGuid().ToString(), CustomerUid = "1" },

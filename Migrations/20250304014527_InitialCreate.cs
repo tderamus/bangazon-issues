@@ -132,40 +132,32 @@ namespace bangazon_issues.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Orders",
+                name: "Payments",
                 columns: table => new
                 {
-                    OrdersId = table.Column<string>(type: "text", nullable: false),
-                    Quantity = table.Column<int>(type: "integer", nullable: false),
-                    OrderDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    IsFullfilled = table.Column<bool>(type: "boolean", nullable: false),
-                    TotalPrice = table.Column<decimal>(type: "numeric", nullable: false),
+                    PaymentId = table.Column<string>(type: "text", nullable: false),
+                    Amount = table.Column<decimal>(type: "numeric", nullable: false),
                     PaymentDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    AccountNumber = table.Column<string>(type: "text", nullable: true),
+                    PaymentTypesPaymentTypeId = table.Column<string>(type: "text", nullable: true),
                     CustomerUid = table.Column<string>(type: "text", nullable: true),
-                    ProductId = table.Column<string>(type: "text", nullable: true),
-                    SellerId = table.Column<string>(type: "text", nullable: true),
-                    OrderStatusId = table.Column<string>(type: "text", nullable: true)
+                    SellerId = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Orders", x => x.OrdersId);
+                    table.PrimaryKey("PK_Payments", x => x.PaymentId);
                     table.ForeignKey(
-                        name: "FK_Orders_Customers_CustomerUid",
+                        name: "FK_Payments_Customers_CustomerUid",
                         column: x => x.CustomerUid,
                         principalTable: "Customers",
                         principalColumn: "Uid");
                     table.ForeignKey(
-                        name: "FK_Orders_OrderStatus_OrderStatusId",
-                        column: x => x.OrderStatusId,
-                        principalTable: "OrderStatus",
-                        principalColumn: "OrderStatusId");
+                        name: "FK_Payments_PaymentTypes_PaymentTypesPaymentTypeId",
+                        column: x => x.PaymentTypesPaymentTypeId,
+                        principalTable: "PaymentTypes",
+                        principalColumn: "PaymentTypeId");
                     table.ForeignKey(
-                        name: "FK_Orders_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "ProductId");
-                    table.ForeignKey(
-                        name: "FK_Orders_Sellers_SellerId",
+                        name: "FK_Payments_Sellers_SellerId",
                         column: x => x.SellerId,
                         principalTable: "Sellers",
                         principalColumn: "SellerId");
@@ -185,6 +177,52 @@ namespace bangazon_issues.Migrations
                     table.PrimaryKey("PK_SellerDashboard", x => x.SellerDashBoardId);
                     table.ForeignKey(
                         name: "FK_SellerDashboard_Sellers_SellerId",
+                        column: x => x.SellerId,
+                        principalTable: "Sellers",
+                        principalColumn: "SellerId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    OrdersId = table.Column<string>(type: "text", nullable: false),
+                    Quantity = table.Column<int>(type: "integer", nullable: false),
+                    OrderDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    IsFullfilled = table.Column<bool>(type: "boolean", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "numeric", nullable: false),
+                    PaymentDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    CustomerUid = table.Column<string>(type: "text", nullable: true),
+                    PaymentId = table.Column<string>(type: "text", nullable: true),
+                    ProductId = table.Column<string>(type: "text", nullable: true),
+                    SellerId = table.Column<string>(type: "text", nullable: true),
+                    OrderStatusId = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.OrdersId);
+                    table.ForeignKey(
+                        name: "FK_Orders_Customers_CustomerUid",
+                        column: x => x.CustomerUid,
+                        principalTable: "Customers",
+                        principalColumn: "Uid");
+                    table.ForeignKey(
+                        name: "FK_Orders_OrderStatus_OrderStatusId",
+                        column: x => x.OrderStatusId,
+                        principalTable: "OrderStatus",
+                        principalColumn: "OrderStatusId");
+                    table.ForeignKey(
+                        name: "FK_Orders_Payments_PaymentId",
+                        column: x => x.PaymentId,
+                        principalTable: "Payments",
+                        principalColumn: "PaymentId");
+                    table.ForeignKey(
+                        name: "FK_Orders_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "ProductId");
+                    table.ForeignKey(
+                        name: "FK_Orders_Sellers_SellerId",
                         column: x => x.SellerId,
                         principalTable: "Sellers",
                         principalColumn: "SellerId");
@@ -247,44 +285,6 @@ namespace bangazon_issues.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Payments",
-                columns: table => new
-                {
-                    PaymentId = table.Column<string>(type: "text", nullable: false),
-                    Amount = table.Column<decimal>(type: "numeric", nullable: false),
-                    PaymentDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    AccountNumber = table.Column<string>(type: "text", nullable: true),
-                    PaymentTypesPaymentTypeId = table.Column<string>(type: "text", nullable: true),
-                    CustomerUid = table.Column<string>(type: "text", nullable: true),
-                    SellerId = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Payments", x => x.PaymentId);
-                    table.ForeignKey(
-                        name: "FK_Payments_Customers_CustomerUid",
-                        column: x => x.CustomerUid,
-                        principalTable: "Customers",
-                        principalColumn: "Uid");
-                    table.ForeignKey(
-                        name: "FK_Payments_Orders_PaymentId",
-                        column: x => x.PaymentId,
-                        principalTable: "Orders",
-                        principalColumn: "OrdersId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Payments_PaymentTypes_PaymentTypesPaymentTypeId",
-                        column: x => x.PaymentTypesPaymentTypeId,
-                        principalTable: "PaymentTypes",
-                        principalColumn: "PaymentTypeId");
-                    table.ForeignKey(
-                        name: "FK_Payments_Sellers_SellerId",
-                        column: x => x.SellerId,
-                        principalTable: "Sellers",
-                        principalColumn: "SellerId");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "SellersOrders",
                 columns: table => new
                 {
@@ -312,8 +312,8 @@ namespace bangazon_issues.Migrations
                 columns: new[] { "AccountTypeId", "TypeAcct" },
                 values: new object[,]
                 {
-                    { "4a1a5df7-87d9-4803-a78a-3227802dd89c", 2 },
-                    { "5338007b-ed9a-4365-802e-3c7750f61a25", 1 }
+                    { "63d1b90b-daeb-4e69-8288-22263e33fcf0", 2 },
+                    { "f21ab4a8-ed2b-4ba1-b05c-09380ad91d29", 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -326,30 +326,21 @@ namespace bangazon_issues.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "OrderItems",
-                columns: new[] { "OrderItemsId", "OrdersId", "ProductsProductId", "Quantity", "TotalPrice" },
-                values: new object[,]
-                {
-                    { "0bf615d6-e000-490e-aaa1-83f93bc9cdc6", "1", null, 2, 45m },
-                    { "950f39d6-613f-45ee-bc5e-0f2206d0e4ff", "2", null, 1, 35m }
-                });
-
-            migrationBuilder.InsertData(
                 table: "OrderStatus",
                 columns: new[] { "OrderStatusId", "OrderState" },
                 values: new object[,]
                 {
-                    { "2abe1613-aa27-43a4-9594-daf97cd6e3c1", 2 },
-                    { "2d4ae539-653e-4fef-839d-ca7e8337008a", 0 }
+                    { "14544b7a-de3b-4cbe-baef-88086336ec6c", 2 },
+                    { "81fbceef-bc08-431e-b0f4-cbde246edce3", 0 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Orders",
-                columns: new[] { "OrdersId", "CustomerUid", "IsFullfilled", "OrderDate", "OrderStatusId", "PaymentDate", "ProductId", "Quantity", "SellerId", "TotalPrice" },
+                columns: new[] { "OrdersId", "CustomerUid", "IsFullfilled", "OrderDate", "OrderStatusId", "PaymentDate", "PaymentId", "ProductId", "Quantity", "SellerId", "TotalPrice" },
                 values: new object[,]
                 {
-                    { "879ec1ad-e771-413d-9abc-fd4a2e5f3d27", null, false, new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new DateTime(2025, 3, 2, 22, 53, 47, 616, DateTimeKind.Local).AddTicks(1461), null, 10, null, 450m },
-                    { "cedfd9e1-e837-4768-bb7c-892a10d09337", null, true, new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new DateTime(2025, 3, 2, 22, 53, 47, 616, DateTimeKind.Local).AddTicks(1500), null, 5, null, 350m }
+                    { "c2eb5be7-b7b7-448e-a5fe-7998d248d35f", null, true, new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new DateTime(2025, 3, 3, 19, 45, 27, 130, DateTimeKind.Local).AddTicks(9515), null, null, 5, null, 350m },
+                    { "e4b488ce-4320-4a0a-951c-1780cf13fadd", null, false, new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new DateTime(2025, 3, 3, 19, 45, 27, 130, DateTimeKind.Local).AddTicks(9472), null, null, 10, null, 450m }
                 });
 
             migrationBuilder.InsertData(
@@ -357,8 +348,8 @@ namespace bangazon_issues.Migrations
                 columns: new[] { "PaymentTypeId", "TypePayment" },
                 values: new object[,]
                 {
-                    { "20b462f5-d798-48c8-bac8-e0484a5a1d5d", 4 },
-                    { "6b740303-de38-4663-9f0e-8b81ef75582c", 9 }
+                    { "65648bcb-9ad5-4ce1-b386-5a198e4b10a4", 4 },
+                    { "fd89cb2d-8e45-4995-afae-4eb2861e325b", 9 }
                 });
 
             migrationBuilder.InsertData(
@@ -366,8 +357,8 @@ namespace bangazon_issues.Migrations
                 columns: new[] { "PaymentId", "AccountNumber", "Amount", "CustomerUid", "PaymentDate", "PaymentTypesPaymentTypeId", "SellerId" },
                 values: new object[,]
                 {
-                    { "a9faf802-94be-4ef5-bde5-edf0d77e693c", "1234567890", 0m, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null },
-                    { "d467a418-fd2d-440c-a9c0-1dcdfb7132d0", "0987654321", 0m, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null }
+                    { "34b5bd26-0ed7-41bc-b35c-4b3232ca90fd", "0987654321", 0m, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null },
+                    { "39dfc9c0-db58-468d-8069-f5a7f1385cf2", "1234567890", 0m, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -375,8 +366,8 @@ namespace bangazon_issues.Migrations
                 columns: new[] { "ProductTypeId", "Description", "ImageUrl", "Name" },
                 values: new object[,]
                 {
-                    { "d9833c74-b778-4653-9aae-5ce7e467ce88", "Widgets are cool", "", "Widgets" },
-                    { "fbd83d1c-3c5f-44ea-8bdf-f95d88f8f20b", "Gadgets are cooler", "", "Gadgets" }
+                    { "c57a270b-6d4a-424d-a55f-ab7c37ce5c8e", "Gadgets are cooler", "", "Gadgets" },
+                    { "f4bb1438-a0f5-4361-ab4c-b95d0e3e7355", "Widgets are cool", "", "Widgets" }
                 });
 
             migrationBuilder.InsertData(
@@ -384,8 +375,8 @@ namespace bangazon_issues.Migrations
                 columns: new[] { "ProductId", "DateAdded", "Description", "ImageUrl", "IsAvailable", "Name", "Price", "ProductTypeId", "Quantity", "SellerUid" },
                 values: new object[,]
                 {
-                    { "6a12075c-7f39-43ba-a264-6c0f9c1288a1", new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "A gadget that does stuff", null, false, "Gadget", 19.99m, 2, 50, "2" },
-                    { "fec8f407-8a1c-438d-958f-5093e39f28f8", new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "A widget that does stuff", null, false, "Widget", 9.99m, 1, 100, "1" }
+                    { "4afc9a1d-7a94-4204-a6dc-fac1c44aaf09", new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "A widget that does stuff", null, false, "Widget", 9.99m, 1, 100, "1" },
+                    { "d40bd311-87b0-4a34-a6a5-634bb497a8da", new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "A gadget that does stuff", null, false, "Gadget", 19.99m, 2, 50, "2" }
                 });
 
             migrationBuilder.InsertData(
@@ -393,8 +384,8 @@ namespace bangazon_issues.Migrations
                 columns: new[] { "SellerDashBoardId", "SellerId", "TotalOrders", "TotalRevenue" },
                 values: new object[,]
                 {
-                    { "629a2974-8deb-405c-ab83-f8c83cae1f1f", null, 1, 19.99m },
-                    { "ab53df5f-cce5-4f73-9188-8f300205cec2", null, 2, 19.98m }
+                    { "93d32240-c382-4c99-a9e2-5d664418d32f", null, 2, 19.98m },
+                    { "cc6bc701-d3aa-4134-ba01-2c8f31c7dcc2", null, 1, 19.99m }
                 });
 
             migrationBuilder.InsertData(
@@ -402,8 +393,8 @@ namespace bangazon_issues.Migrations
                 columns: new[] { "SellerId", "AccountTypeId", "City", "Email", "FirstName", "LastName", "PhoneNumber", "PostalCode", "State" },
                 values: new object[,]
                 {
-                    { "2320613c-d0b8-488a-94c2-34831516b270", null, "Decatur", "seller@email.com", "Jane", "Doe", "555-555-5555", "32323", "Georgia" },
-                    { "e7ec9deb-2c93-4ce1-b52f-8d56076c1f78", null, "Birmingham", "jsmith@jsmith.com", "John", "Smith", "256-555-5555", "35203", "Alabama" }
+                    { "b52cf90d-b4d1-4e89-b979-e6af88787c7a", null, "Birmingham", "jsmith@jsmith.com", "John", "Smith", "256-555-5555", "35203", "Alabama" },
+                    { "df3e83dd-4d01-4050-83fd-f6ca1112b2ef", null, "Decatur", "seller@email.com", "Jane", "Doe", "555-555-5555", "32323", "Georgia" }
                 });
 
             migrationBuilder.InsertData(
@@ -411,8 +402,8 @@ namespace bangazon_issues.Migrations
                 columns: new[] { "SellerOrdersId", "OrdersId", "SellersSellerId" },
                 values: new object[,]
                 {
-                    { "3ef8f136-7361-458e-920d-5945cf3f652c", null, null },
-                    { "925d05d3-fd3c-4dfa-9b09-95952e5d0242", null, null }
+                    { "0feac109-5731-480a-aba1-51c6b2b77ff5", null, null },
+                    { "c1ee1fb5-2db6-4c90-b3ef-510e3641bd42", null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -420,8 +411,17 @@ namespace bangazon_issues.Migrations
                 columns: new[] { "CustomerOrderId", "CustomerUid", "OrdersId", "SellerId" },
                 values: new object[,]
                 {
-                    { "1198a6df-c6a8-4c67-9243-637282074d87", "1", null, null },
-                    { "466a4dab-6b6c-42f8-a833-ea84093e8bc4", "2", null, null }
+                    { "07d2596f-58f3-4ba1-b1f6-2eae26c6c615", "1", null, null },
+                    { "285a4c51-9e9d-4620-ae86-fdb1d82cf019", "2", null, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "OrderItems",
+                columns: new[] { "OrderItemsId", "OrdersId", "ProductsProductId", "Quantity", "TotalPrice" },
+                values: new object[,]
+                {
+                    { "1b6869ea-e12f-4918-8b74-10d03f0e6985", "c2eb5be7-b7b7-448e-a5fe-7998d248d35f", null, 1, 35m },
+                    { "fddd2a63-75d4-4e7e-b7da-0c641f766727", "e4b488ce-4320-4a0a-951c-1780cf13fadd", null, 2, 45m }
                 });
 
             migrationBuilder.CreateIndex(
@@ -464,6 +464,12 @@ namespace bangazon_issues.Migrations
                 name: "IX_Orders_OrderStatusId",
                 table: "Orders",
                 column: "OrderStatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_PaymentId",
+                table: "Orders",
+                column: "PaymentId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_ProductId",
@@ -521,9 +527,6 @@ namespace bangazon_issues.Migrations
                 name: "OrderItems");
 
             migrationBuilder.DropTable(
-                name: "Payments");
-
-            migrationBuilder.DropTable(
                 name: "ProductTypes");
 
             migrationBuilder.DropTable(
@@ -533,19 +536,22 @@ namespace bangazon_issues.Migrations
                 name: "SellersOrders");
 
             migrationBuilder.DropTable(
-                name: "PaymentTypes");
-
-            migrationBuilder.DropTable(
                 name: "Orders");
-
-            migrationBuilder.DropTable(
-                name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "OrderStatus");
 
             migrationBuilder.DropTable(
+                name: "Payments");
+
+            migrationBuilder.DropTable(
                 name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "Customers");
+
+            migrationBuilder.DropTable(
+                name: "PaymentTypes");
 
             migrationBuilder.DropTable(
                 name: "Sellers");

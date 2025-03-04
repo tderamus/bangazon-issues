@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace bangazon_issues.Models
 {
@@ -13,6 +15,9 @@ namespace bangazon_issues.Models
         public decimal TotalPrice { get; set; }
         public required DateTime PaymentDate { get; set; }
         public Customers? Customer { get; set; }
+        public string? PaymentId { get; set; }
+
+        [ForeignKey("PaymentId")]
         public Payments? Payment { get; set; }
         public Products? Product { get; set; }
         public Sellers? Seller { get; set; }
