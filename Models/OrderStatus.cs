@@ -16,7 +16,7 @@ namespace bangazon_issues.Models
         }
 
         [Key]
-        public int OrderStatusId { get; set; }
+        public string OrderStatusId { get; set; } = Guid.NewGuid().ToString();
         public StatusOfOrder OrderState { get; set; }
 
     }

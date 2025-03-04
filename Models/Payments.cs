@@ -5,7 +5,7 @@ namespace bangazon_issues.Models
     public class Payments
     {
         [Key]
-        public int PaymentId { get; set; }
+        public string PaymentId { get; set; } = Guid.NewGuid().ToString();
         public decimal Amount { get; set; }
         public DateTime PaymentDate { get; set; }
         public string? AccountNumber { get; set; }

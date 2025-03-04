@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace bangazon_issues.Migrations
 {
     [DbContext(typeof(BangazonDbContext))]
-    [Migration("20250302212348_InitialCreate")]
+    [Migration("20250304014527_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -26,13 +26,11 @@ namespace bangazon_issues.Migrations
 
             modelBuilder.Entity("bangazon_issues.Models.AccountType", b =>
                 {
-                    b.Property<int>("AccountTypeId")
+                    b.Property<string>("AccountTypeId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("text");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("AccountTypeId"));
-
-                    b.Property<int>("AccountTypeEnum")
+                    b.Property<int>("TypeAcct")
                         .HasColumnType("integer");
 
                     b.HasKey("AccountTypeId");
@@ -42,13 +40,13 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            AccountTypeId = 1,
-                            AccountTypeEnum = 2
+                            AccountTypeId = "63d1b90b-daeb-4e69-8288-22263e33fcf0",
+                            TypeAcct = 2
                         },
                         new
                         {
-                            AccountTypeId = 2,
-                            AccountTypeEnum = 1
+                            AccountTypeId = "f21ab4a8-ed2b-4ba1-b05c-09380ad91d29",
+                            TypeAcct = 1
                         });
                 });
 
@@ -58,13 +56,20 @@ namespace bangazon_issues.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
-                    b.Property<int?>("OrdersId")
-                        .HasColumnType("integer");
+                    b.Property<string>("CustomerUid")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("OrdersId")
+                        .HasColumnType("text");
 
                     b.Property<string>("SellerId")
                         .HasColumnType("text");
 
                     b.HasKey("CustomerOrderId");
+
+                    b.HasIndex("CustomerUid")
+                        .IsUnique();
 
                     b.HasIndex("OrdersId");
 
@@ -75,11 +80,13 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            CustomerOrderId = "1"
+                            CustomerOrderId = "07d2596f-58f3-4ba1-b1f6-2eae26c6c615",
+                            CustomerUid = "1"
                         },
                         new
                         {
-                            CustomerOrderId = "2"
+                            CustomerOrderId = "285a4c51-9e9d-4620-ae86-fdb1d82cf019",
+                            CustomerUid = "2"
                         });
                 });
 
@@ -88,8 +95,8 @@ namespace bangazon_issues.Migrations
                     b.Property<string>("Uid")
                         .HasColumnType("text");
 
-                    b.Property<int?>("AccountTypeId")
-                        .HasColumnType("integer");
+                    b.Property<string>("AccountTypeId")
+                        .HasColumnType("text");
 
                     b.Property<string>("City")
                         .HasColumnType("text");
@@ -148,12 +155,16 @@ namespace bangazon_issues.Migrations
 
             modelBuilder.Entity("bangazon_issues.Models.OrderItems", b =>
                 {
-                    b.Property<int>("OrderItemsId")
+                    b.Property<string>("OrderItemsId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("text");
 
-                    b.Property<int?>("ProductsProductId")
-                        .HasColumnType("integer");
+                    b.Property<string>("OrdersId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProductsProductId")
+                        .HasColumnType("text");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
@@ -163,6 +174,8 @@ namespace bangazon_issues.Migrations
 
                     b.HasKey("OrderItemsId");
 
+                    b.HasIndex("OrdersId");
+
                     b.HasIndex("ProductsProductId");
 
                     b.ToTable("OrderItems");
@@ -170,13 +183,15 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            OrderItemsId = 1,
+                            OrderItemsId = "fddd2a63-75d4-4e7e-b7da-0c641f766727",
+                            OrdersId = "e4b488ce-4320-4a0a-951c-1780cf13fadd",
                             Quantity = 2,
                             TotalPrice = 45m
                         },
                         new
                         {
-                            OrderItemsId = 2,
+                            OrderItemsId = "1b6869ea-e12f-4918-8b74-10d03f0e6985",
+                            OrdersId = "c2eb5be7-b7b7-448e-a5fe-7998d248d35f",
                             Quantity = 1,
                             TotalPrice = 35m
                         });
@@ -184,11 +199,12 @@ namespace bangazon_issues.Migrations
 
             modelBuilder.Entity("bangazon_issues.Models.OrderStatus", b =>
                 {
-                    b.Property<int>("OrderStatusId")
+                    b.Property<string>("OrderStatusId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("text");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("OrderStatusId"));
+                    b.Property<int>("OrderState")
+                        .HasColumnType("integer");
 
                     b.HasKey("OrderStatusId");
 
@@ -197,21 +213,21 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            OrderStatusId = 1
+                            OrderStatusId = "81fbceef-bc08-431e-b0f4-cbde246edce3",
+                            OrderState = 0
                         },
                         new
                         {
-                            OrderStatusId = 2
+                            OrderStatusId = "14544b7a-de3b-4cbe-baef-88086336ec6c",
+                            OrderState = 2
                         });
                 });
 
             modelBuilder.Entity("bangazon_issues.Models.Orders", b =>
                 {
-                    b.Property<int>("OrdersId")
+                    b.Property<string>("OrdersId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("OrdersId"));
+                        .HasColumnType("text");
 
                     b.Property<string>("CustomerUid")
                         .HasColumnType("text");
@@ -222,14 +238,17 @@ namespace bangazon_issues.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int?>("OrderStatusId")
-                        .HasColumnType("integer");
+                    b.Property<string>("OrderStatusId")
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("integer");
+                    b.Property<string>("PaymentId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProductId")
+                        .HasColumnType("text");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
@@ -246,6 +265,9 @@ namespace bangazon_issues.Migrations
 
                     b.HasIndex("OrderStatusId");
 
+                    b.HasIndex("PaymentId")
+                        .IsUnique();
+
                     b.HasIndex("ProductId");
 
                     b.HasIndex("SellerId");
@@ -255,19 +277,19 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            OrdersId = 1,
+                            OrdersId = "e4b488ce-4320-4a0a-951c-1780cf13fadd",
                             IsFullfilled = false,
                             OrderDate = new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PaymentDate = new DateTime(2025, 3, 2, 15, 23, 47, 709, DateTimeKind.Local).AddTicks(4620),
+                            PaymentDate = new DateTime(2025, 3, 3, 19, 45, 27, 130, DateTimeKind.Local).AddTicks(9472),
                             Quantity = 10,
                             TotalPrice = 450m
                         },
                         new
                         {
-                            OrdersId = 2,
+                            OrdersId = "c2eb5be7-b7b7-448e-a5fe-7998d248d35f",
                             IsFullfilled = true,
                             OrderDate = new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PaymentDate = new DateTime(2025, 3, 2, 15, 23, 47, 709, DateTimeKind.Local).AddTicks(4660),
+                            PaymentDate = new DateTime(2025, 3, 3, 19, 45, 27, 130, DateTimeKind.Local).AddTicks(9515),
                             Quantity = 5,
                             TotalPrice = 350m
                         });
@@ -275,11 +297,12 @@ namespace bangazon_issues.Migrations
 
             modelBuilder.Entity("bangazon_issues.Models.PaymentTypes", b =>
                 {
-                    b.Property<int>("PaymentTypeId")
+                    b.Property<string>("PaymentTypeId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("text");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("PaymentTypeId"));
+                    b.Property<int>("TypePayment")
+                        .HasColumnType("integer");
 
                     b.HasKey("PaymentTypeId");
 
@@ -288,19 +311,21 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            PaymentTypeId = 1
+                            PaymentTypeId = "65648bcb-9ad5-4ce1-b386-5a198e4b10a4",
+                            TypePayment = 4
                         },
                         new
                         {
-                            PaymentTypeId = 2
+                            PaymentTypeId = "fd89cb2d-8e45-4995-afae-4eb2861e325b",
+                            TypePayment = 9
                         });
                 });
 
             modelBuilder.Entity("bangazon_issues.Models.Payments", b =>
                 {
-                    b.Property<int>("PaymentId")
+                    b.Property<string>("PaymentId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("text");
 
                     b.Property<string>("AccountNumber")
                         .HasColumnType("text");
@@ -314,8 +339,8 @@ namespace bangazon_issues.Migrations
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int?>("PaymentTypesPaymentTypeId")
-                        .HasColumnType("integer");
+                    b.Property<string>("PaymentTypesPaymentTypeId")
+                        .HasColumnType("text");
 
                     b.Property<string>("SellerId")
                         .HasColumnType("text");
@@ -333,14 +358,14 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            PaymentId = 1,
+                            PaymentId = "39dfc9c0-db58-468d-8069-f5a7f1385cf2",
                             AccountNumber = "1234567890",
                             Amount = 0m,
                             PaymentDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            PaymentId = 2,
+                            PaymentId = "34b5bd26-0ed7-41bc-b35c-4b3232ca90fd",
                             AccountNumber = "0987654321",
                             Amount = 0m,
                             PaymentDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -349,11 +374,9 @@ namespace bangazon_issues.Migrations
 
             modelBuilder.Entity("bangazon_issues.Models.ProductTypes", b =>
                 {
-                    b.Property<int>("ProductTypeId")
+                    b.Property<string>("ProductTypeId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ProductTypeId"));
+                        .HasColumnType("text");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -371,14 +394,14 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            ProductTypeId = 1,
+                            ProductTypeId = "f4bb1438-a0f5-4361-ab4c-b95d0e3e7355",
                             Description = "Widgets are cool",
                             ImageUrl = "",
                             Name = "Widgets"
                         },
                         new
                         {
-                            ProductTypeId = 2,
+                            ProductTypeId = "c57a270b-6d4a-424d-a55f-ab7c37ce5c8e",
                             Description = "Gadgets are cooler",
                             ImageUrl = "",
                             Name = "Gadgets"
@@ -387,11 +410,9 @@ namespace bangazon_issues.Migrations
 
             modelBuilder.Entity("bangazon_issues.Models.Products", b =>
                 {
-                    b.Property<int>("ProductId")
+                    b.Property<string>("ProductId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ProductId"));
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("DateAdded")
                         .HasColumnType("timestamp without time zone");
@@ -427,7 +448,7 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            ProductId = 1,
+                            ProductId = "4afc9a1d-7a94-4204-a6dc-fac1c44aaf09",
                             DateAdded = new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "A widget that does stuff",
                             IsAvailable = false,
@@ -439,7 +460,7 @@ namespace bangazon_issues.Migrations
                         },
                         new
                         {
-                            ProductId = 2,
+                            ProductId = "d40bd311-87b0-4a34-a6a5-634bb497a8da",
                             DateAdded = new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "A gadget that does stuff",
                             IsAvailable = false,
@@ -453,11 +474,9 @@ namespace bangazon_issues.Migrations
 
             modelBuilder.Entity("bangazon_issues.Models.SellerDashboard", b =>
                 {
-                    b.Property<int>("SellerDashBoardId")
+                    b.Property<string>("SellerDashBoardId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SellerDashBoardId"));
+                        .HasColumnType("text");
 
                     b.Property<string>("SellerId")
                         .HasColumnType("text");
@@ -477,13 +496,13 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            SellerDashBoardId = 1,
+                            SellerDashBoardId = "93d32240-c382-4c99-a9e2-5d664418d32f",
                             TotalOrders = 2,
                             TotalRevenue = 19.98m
                         },
                         new
                         {
-                            SellerDashBoardId = 2,
+                            SellerDashBoardId = "cc6bc701-d3aa-4134-ba01-2c8f31c7dcc2",
                             TotalOrders = 1,
                             TotalRevenue = 19.99m
                         });
@@ -491,14 +510,12 @@ namespace bangazon_issues.Migrations
 
             modelBuilder.Entity("bangazon_issues.Models.SellerOrders", b =>
                 {
-                    b.Property<int>("SellerOrdersId")
+                    b.Property<string>("SellerOrdersId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("text");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SellerOrdersId"));
-
-                    b.Property<int?>("OrdersId")
-                        .HasColumnType("integer");
+                    b.Property<string>("OrdersId")
+                        .HasColumnType("text");
 
                     b.Property<string>("SellersSellerId")
                         .HasColumnType("text");
@@ -514,11 +531,11 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            SellerOrdersId = 1
+                            SellerOrdersId = "c1ee1fb5-2db6-4c90-b3ef-510e3641bd42"
                         },
                         new
                         {
-                            SellerOrdersId = 2
+                            SellerOrdersId = "0feac109-5731-480a-aba1-51c6b2b77ff5"
                         });
                 });
 
@@ -527,8 +544,8 @@ namespace bangazon_issues.Migrations
                     b.Property<string>("SellerId")
                         .HasColumnType("text");
 
-                    b.Property<int?>("AccountTypeId")
-                        .HasColumnType("integer");
+                    b.Property<string>("AccountTypeId")
+                        .HasColumnType("text");
 
                     b.Property<string>("City")
                         .HasColumnType("text");
@@ -563,7 +580,7 @@ namespace bangazon_issues.Migrations
                     b.HasData(
                         new
                         {
-                            SellerId = "1",
+                            SellerId = "df3e83dd-4d01-4050-83fd-f6ca1112b2ef",
                             City = "Decatur",
                             Email = "seller@email.com",
                             FirstName = "Jane",
@@ -571,6 +588,17 @@ namespace bangazon_issues.Migrations
                             PhoneNumber = "555-555-5555",
                             PostalCode = "32323",
                             State = "Georgia"
+                        },
+                        new
+                        {
+                            SellerId = "b52cf90d-b4d1-4e89-b979-e6af88787c7a",
+                            City = "Birmingham",
+                            Email = "jsmith@jsmith.com",
+                            FirstName = "John",
+                            LastName = "Smith",
+                            PhoneNumber = "256-555-5555",
+                            PostalCode = "35203",
+                            State = "Alabama"
                         });
                 });
 
@@ -578,7 +606,7 @@ namespace bangazon_issues.Migrations
                 {
                     b.HasOne("bangazon_issues.Models.Customers", "Customer")
                         .WithOne("CustomerOrders")
-                        .HasForeignKey("bangazon_issues.Models.CustomerOrders", "CustomerOrderId")
+                        .HasForeignKey("bangazon_issues.Models.CustomerOrders", "CustomerUid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -609,8 +637,8 @@ namespace bangazon_issues.Migrations
             modelBuilder.Entity("bangazon_issues.Models.OrderItems", b =>
                 {
                     b.HasOne("bangazon_issues.Models.Orders", "Orders")
-                        .WithOne("OrderItems")
-                        .HasForeignKey("bangazon_issues.Models.OrderItems", "OrderItemsId")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrdersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -633,6 +661,10 @@ namespace bangazon_issues.Migrations
                         .WithMany()
                         .HasForeignKey("OrderStatusId");
 
+                    b.HasOne("bangazon_issues.Models.Payments", "Payment")
+                        .WithOne("Orders")
+                        .HasForeignKey("bangazon_issues.Models.Orders", "PaymentId");
+
                     b.HasOne("bangazon_issues.Models.Products", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId");
@@ -645,6 +677,8 @@ namespace bangazon_issues.Migrations
 
                     b.Navigation("OrderStatus");
 
+                    b.Navigation("Payment");
+
                     b.Navigation("Product");
 
                     b.Navigation("Seller");
@@ -656,12 +690,6 @@ namespace bangazon_issues.Migrations
                         .WithMany()
                         .HasForeignKey("CustomerUid");
 
-                    b.HasOne("bangazon_issues.Models.Orders", "Orders")
-                        .WithOne("Payment")
-                        .HasForeignKey("bangazon_issues.Models.Payments", "PaymentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("bangazon_issues.Models.PaymentTypes", "PaymentTypes")
                         .WithMany()
                         .HasForeignKey("PaymentTypesPaymentTypeId");
@@ -671,8 +699,6 @@ namespace bangazon_issues.Migrations
                         .HasForeignKey("SellerId");
 
                     b.Navigation("Customer");
-
-                    b.Navigation("Orders");
 
                     b.Navigation("PaymentTypes");
 
@@ -720,8 +746,11 @@ namespace bangazon_issues.Migrations
             modelBuilder.Entity("bangazon_issues.Models.Orders", b =>
                 {
                     b.Navigation("OrderItems");
+                });
 
-                    b.Navigation("Payment");
+            modelBuilder.Entity("bangazon_issues.Models.Payments", b =>
+                {
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }
