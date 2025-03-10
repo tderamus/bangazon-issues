@@ -198,9 +198,18 @@ app.MapGet("api/orderstatus", (BangazonDbContext db) =>
 // Create a new Customer
 app.MapPost("api/customers", (BangazonDbContext db, Customers customer) =>
 {
+    if (string.IsNullOrEmpty(customer.Uid))
+    {
+        customer.Uid = Guid.NewGuid().ToString();
+    }
+    if (db.Customers == null)
+    {
+        return Results.Problem("Database table Customers is not available.");
+    }
+
     db.Customers.Add(customer);
     db.SaveChanges();
-    return Results.Created($"/api/customers/{customer.Uid}", customer);
+    return Results.Ok(customer);
 });
 
 // Create a new CustomerOrder
@@ -240,9 +249,14 @@ app.MapPost("api/sellers", (BangazonDbContext db, Sellers seller) =>
     {
         seller.SellerId = Guid.NewGuid().ToString();
     }
+    if (db.Sellers == null)
+    {
+        return Results.Problem("Database table Sellers is not available.");
+    }
+
     db.Sellers.Add(seller);
     db.SaveChanges();
-    return Results.Created($"/api/sellers/{seller.SellerId}", seller);
+    return Results.Ok(seller);
 });
 
 // Create a new Product
@@ -257,6 +271,55 @@ app.MapPost("api/products", (BangazonDbContext db, Products product) =>
     return Results.Created($"/api/products/{product.ProductId}", product);
 });
 
+//****************************************************************PUT (Update) API CALLS****************************************************************
+
+// Update a Customer
+app.MapPut("api/customers/{Uid}", (BangazonDbContext db, string Uid, Customers customer) =>
+{
+    var customerToUpdate = db.Customers.Find(Uid);
+    if (customerToUpdate == null)
+    {
+        return Results.NotFound();
+    }
+    customerToUpdate.FirstName = customer.FirstName;
+    customerToUpdate.LastName = customer.LastName;
+    customerToUpdate.Email = customer.Email;
+    customerToUpdate.PhoneNumber = customer.PhoneNumber;
+    customerToUpdate.City = customer.City;
+    customerToUpdate.State = customer.State;
+    customerToUpdate.PostalCode = customer.PostalCode;
+    customerToUpdate.AccountType = customer.AccountType;
+    db.SaveChanges();
+    return Results.Ok(customerToUpdate);
+});
+
+//****************************************************************DELETE API CALLS****************************************************************
+
+// DELETE a Customer
+app.MapDelete("api/customers/{Uid}", (BangazonDbContext db, string Uid) =>
+{
+    var customer = db.Customers.Find(Uid);
+    if (customer == null)
+    {
+        return Results.NotFound();
+    }
+    db.Customers.Remove(customer);
+    db.SaveChanges();
+    return Results.NoContent();
+});
+
+// DELETE a Seller
+app.MapDelete("api/sellers/{SellerId}", (BangazonDbContext db, string SellerId) =>
+{
+    var seller = db.Sellers.Find(SellerId);
+    if (seller == null)
+    {
+        return Results.NotFound();
+    }
+    db.Sellers.Remove(seller);
+    db.SaveChanges();
+    return Results.NoContent();
+});
 
 app.Run();
 
