@@ -163,6 +163,17 @@ app.MapGet("api/sellers", (BangazonDbContext db) =>
     return Results.Ok(db.Sellers.ToList());
 });
 
+// GET a single seller by their SellerId
+app.MapGet("api/sellers/{SellerId}", (BangazonDbContext db, string SellerId) =>
+{
+    var seller = db.Sellers.Find(SellerId);
+    if (seller == null)
+    {
+        return Results.NotFound();
+    }
+    return Results.Ok(seller);
+});
+
 // GET All SellerDashboard
 app.MapGet("api/sellerdashboard", (BangazonDbContext db) =>
 {
