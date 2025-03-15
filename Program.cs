@@ -270,16 +270,50 @@ app.MapPost("api/sellers", (BangazonDbContext db, Sellers seller) =>
     return Results.Ok(seller);
 });
 
-// Create a new Product
 app.MapPost("api/products", (BangazonDbContext db, Products product) =>
 {
     if (string.IsNullOrEmpty(product.ProductId))
     {
         product.ProductId = Guid.NewGuid().ToString();
     }
+    app.MapPost("api/products", (BangazonDbContext db, Products product) =>
+    {
+        if (string.IsNullOrEmpty(product.ProductId))
+        {
+            product.ProductId = Guid.NewGuid().ToString();
+        }
+        if (product.ProductTypeId == 0)
+        {
+            product.ProductTypeId = Guid.NewGuid().GetHashCode();
+        }
+        if (product.DateAdded == default(DateTime))
+        {
+            product.DateAdded = DateTime.Now;
+        }
+        db.Products.Add(product);
+        db.SaveChanges();
+        return Results.Created($"/api/products/{product.ProductId}", product);
+    });
+    if (product.DateAdded == default(DateTime))
+    {
+        product.DateAdded = DateTime.Now;
+    }
     db.Products.Add(product);
     db.SaveChanges();
     return Results.Created($"/api/products/{product.ProductId}", product);
+});
+
+
+// Create a new ProductType
+app.MapPost("api/producttypes", (BangazonDbContext db, ProductTypes productType) =>
+{
+    if (string.IsNullOrEmpty(productType.ProductTypeId))
+    {
+        productType.ProductTypeId = Guid.NewGuid().ToString();
+    }
+    db.ProductTypes.Add(productType);
+    db.SaveChanges();
+    return Results.Created($"/api/producttypes/{productType.ProductTypeId}", productType);
 });
 
 //****************************************************************PUT (Update) API CALLS****************************************************************
@@ -302,6 +336,19 @@ app.MapPut("api/customers/{Uid}", (BangazonDbContext db, string Uid, Customers c
     customerToUpdate.AccountType = customer.AccountType;
     db.SaveChanges();
     return Results.Ok(customerToUpdate);
+});
+
+// Update Product Type
+app.MapPut("api/producttypes/{ProductTypeId}", (BangazonDbContext db, string ProductTypeId, ProductTypes productType) =>
+{
+    var productTypeToUpdate = db.ProductTypes.Find(ProductTypeId);
+    if (productTypeToUpdate == null)
+    {
+        return Results.NotFound();
+    }
+    productTypeToUpdate.Name = productType.Name;
+    db.SaveChanges();
+    return Results.Ok(productTypeToUpdate);
 });
 
 //****************************************************************DELETE API CALLS****************************************************************
@@ -328,6 +375,19 @@ app.MapDelete("api/sellers/{SellerId}", (BangazonDbContext db, string SellerId) 
         return Results.NotFound();
     }
     db.Sellers.Remove(seller);
+    db.SaveChanges();
+    return Results.NoContent();
+});
+
+// DELETE a Product
+app.MapDelete("api/products/{ProductId}", (BangazonDbContext db, string ProductId) =>
+{
+    var product = db.Products.Find(ProductId);
+    if (product == null)
+    {
+        return Results.NotFound();
+    }
+    db.Products.Remove(product);
     db.SaveChanges();
     return Results.NoContent();
 });
